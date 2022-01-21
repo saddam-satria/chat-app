@@ -1,12 +1,12 @@
-FROM node:14.18
+FROM node:14.18-alpine
 
 WORKDIR /backend
 
 COPY package*.json ./backend
 
-RUN npm install
+RUN yarn install --production
 
-COPY ./build ./backend
+COPY build ./backend
 
 CMD [ "node", "server.js" ]
 
