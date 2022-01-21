@@ -1,0 +1,5 @@
+MONGO_URL = yoururl
+PUSHER_ID = yourid
+PUSHER_KEY = yourkey
+PUSHER_SECRET = yoursecret
+PUSHER_CLUSTER = yourcluster
