@@ -1,19 +1,15 @@
 import express from 'express';
-import { config } from 'dotenv';
 import cors from 'cors';
 import routes from './app/config/routes';
 import { connect } from 'mongoose';
+import { MONGO_URL, PORT } from './app/config/constant';
 
 (() => {
   const app = express();
-  const PORT: number | string = process.env.PORT || 5000;
 
-  config();
   app.use(cors());
   app.use(express.json());
   app.use(routes);
-
-  const MONGO_URL: any = process.env.MONGO_URL;
 
   connect(MONGO_URL)
     .then(() => {
