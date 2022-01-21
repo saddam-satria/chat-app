@@ -1,12 +1,12 @@
 FROM node:14.18-alpine
 
-WORKDIR /backend
+WORKDIR /usr/src/chat-app/backend
 
-COPY package*.json ./backend
+COPY package*.json .
 
 RUN yarn install --production
 
-COPY build ./backend
+COPY build ./
 
 CMD [ "node", "server.js" ]
 
