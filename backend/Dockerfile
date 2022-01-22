@@ -6,7 +6,7 @@ COPY package*.json .
 
 RUN yarn install --production
 
-COPY build ./
+COPY build /usr/src/chat-app/backend
 
 CMD [ "node", "server.js" ]
 
