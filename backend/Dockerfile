@@ -2,7 +2,7 @@ FROM node:14.18-alpine
 
 WORKDIR /usr/src/chat-app/backend
 
-COPY package*.json .
+COPY package*.json /usr/src/chat-app/backend
 
 RUN yarn install --production
 
