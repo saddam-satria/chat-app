@@ -1,6 +1,24 @@
 import { Box, Button, Flex, Heading, Input } from '@chakra-ui/react';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+interface UserInterface {
+  from: string;
+  to: string;
+}
 
 const Home: React.FC = () => {
+  const [user, setUser] = useState<UserInterface>({
+    from: '',
+    to: '',
+  });
+  const navigate = useNavigate();
+
+  const startChatHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    localStorage.setItem('user', JSON.stringify(user));
+    navigate('/room-chat');
+  };
+
   return (
     <Box bg={'propulsion.primary'} minH={'100vh'}>
       <Box marginX={{ sm: '10px', md: 0 }}>
@@ -10,7 +28,16 @@ const Home: React.FC = () => {
               Welcome to chat app
             </Heading>
             <Flex flexDir={'column'} h={'15vh'} justifyContent={'space-between'}>
-              <Input placeholder="From" _placeholder={{ color: '#f2f8ff' }} _focus={{ border: 'none', outline: 'none' }} _active={{ border: 'none', outline: 'none' }} bg={'propulsion.thirdy'} color={'propulsion.secondary'}></Input>
+              <Input
+                border={'none'}
+                placeholder="From"
+                _placeholder={{ color: '#f2f8ff' }}
+                _focus={{ border: 'none', outline: 'none' }}
+                _active={{ border: 'none', outline: 'none' }}
+                bg={'propulsion.thirdy'}
+                color={'propulsion.secondary'}
+                onChange={(e) => setUser({ ...user, from: e.target.value })}
+              ></Input>
               <Input
                 paddingY={'1rem'}
                 placeholder="To"
@@ -20,6 +47,7 @@ const Home: React.FC = () => {
                 bg={'propulsion.thirdy'}
                 color={'propulsion.secondary'}
                 border={'none'}
+                onChange={(e) => setUser({ ...user, to: e.target.value })}
               ></Input>
               <Box marginLeft={'auto'}>
                 <Button
@@ -31,8 +59,9 @@ const Home: React.FC = () => {
                   fontSize={'14px'}
                   color={'propulsion.secondary'}
                   bg={'propulsion.thirdy'}
+                  onClick={startChatHandler}
                 >
-                  Send Message
+                  Start Chatting
                 </Button>
               </Box>
             </Flex>
