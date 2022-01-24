@@ -9,7 +9,7 @@ class BaseController {
     this.request = request;
     this.response = response;
   }
-  protected errorHandling(code: number, message?: string | any) {
+  protected errorHandling(code: number, message?: string | any): void {
     this.response.status(code).json({
       status: this.response.statusCode,
       timestampts: this.currentDate,
