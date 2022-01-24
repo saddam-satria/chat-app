@@ -16,7 +16,7 @@ class MessagesController extends BaseController {
     return this.instance;
   }
 
-  public async get() {
+  public async get(): Promise<void> {
     try {
       const messages = await Messages.find();
 
@@ -29,7 +29,7 @@ class MessagesController extends BaseController {
       this.errorHandling(200, error);
     }
   }
-  public async post() {
+  public async post(): Promise<void> {
     const { from, to, message }: MessagesInterface = this.request.body;
 
     const data: MessagesInterface = {

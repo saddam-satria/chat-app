@@ -1,7 +1,7 @@
 import BaseController from '../config/controller';
 
 class WelcomeController extends BaseController {
-  public get() {
+  public get(): void {
     this.response.status(200).json({ msg: 'welcome' });
   }
 }

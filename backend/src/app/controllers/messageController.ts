@@ -16,7 +16,7 @@ class MessageController extends BaseController {
     return this.instance;
   }
 
-  public async get() {
+  public async get(): Promise<void> {
     try {
       const message = await Messages.findById(this.id);
       this.response.status(200).json({
@@ -40,7 +40,7 @@ class MessageController extends BaseController {
       this.errorHandling(400, error);
     }
   }
-  public async update() {
+  public async update(): Promise<void> {
     try {
       const { from, to, message } = this.request.body;
 
