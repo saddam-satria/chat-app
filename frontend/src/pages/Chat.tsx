@@ -1,21 +1,31 @@
 import { Box, Button, Flex, Icon, Input, Tag, Text } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import LoadingComponent from '../components/LoadingComponent';
 import { GetMessage, PostMessage } from '../hooks/Messages';
 
 const Chat: React.FC = () => {
   const { messages } = GetMessage();
   const [text, setText] = useState<string>('');
+  const [currUser, setCurrUser] = useState('');
+  const [toUser, setToUser] = useState('');
+
+  useEffect(() => {
+    let user: any = localStorage.getItem('user');
+    user = JSON.parse(user);
+    setCurrUser(user.from);
+    setToUser(user.to);
+  }, []);
 
   const sendMessageHandler = (e: any) => {
     e.preventDefault();
-    PostMessage({ from: 'saddam', to: 'you', message: text });
+    PostMessage({ from: currUser, to: toUser, message: text });
     setText('');
   };
 
   const sendMessagekeyupHandler = (e: any) => {
     if (e.keyCode === 13) {
       e.preventDefault();
-      PostMessage({ from: 'saddam', to: 'you', message: text });
+      PostMessage({ from: currUser, to: toUser, message: text });
 
       setText('');
     }
@@ -28,11 +38,12 @@ const Chat: React.FC = () => {
           <Flex justifyContent={{ sm: 'start', lg: 'center' }} paddingY={{ sm: 0, lg: '3rem' }}>
             <Box w={{ sm: 'full', lg: '80%' }} bg={'propulsion.secondary'} h={'80vh'} shadow={'xl'} padding={'20px'} borderRadius={'xl'}>
               <Flex>
-                <Box flex="0.3">ss</Box>
-                <Box flex="0.7" bg={'propulsion.secondary'} paddingX={'0.5rem'} shadow={'xl'} paddingY={'1rem'}>
+                <Box flex="1" bg={'propulsion.secondary'} paddingX={'0.5rem'} shadow={'xl'} paddingY={'1rem'}>
                   <Flex>
                     <Box>
-                      <Text>Room Chat</Text>
+                      <Text color={'propulsion.thirdy'} textTransform={'capitalize'}>
+                        {toUser}
+                      </Text>
                     </Box>
                     <Box paddingX={'10px'} marginLeft={'auto'}>
                       <Flex>
@@ -45,16 +56,15 @@ const Chat: React.FC = () => {
                 </Box>
               </Flex>
               <Flex marginTop={'10px'} h={'68vh'}>
-                <Box flex="0.3">ss</Box>
-                <Flex flexDir={'column'} overflow={'hidden'} h={'full'} flex="0.7" bg={'propulsion.secondary'} paddingX={'0.5rem'} shadow={'xl'} paddingY={'1rem'}>
+                <Flex flexDir={'column'} overflow={'hidden'} h={'full'} flex="1" bg={'propulsion.secondary'} paddingX={'0.5rem'} shadow={'xl'} paddingY={'1rem'}>
                   <Flex overflowY={'scroll'} paddingX={'10px'} flexDir={'column'} h={'full'}>
-                    {messages &&
+                    {messages ? (
                       messages.map((message: { from: string; to: string; message: string }, index: number) => {
                         return (
-                          <Flex flexDir={'column'} key={index}>
+                          <Flex flexDir={'column'} key={index} alignItems={message.from === currUser ? 'end' : 'start'}>
                             <Box>
                               <Tag shadow={'lg'} as={'span'} padding={'10px'} textTransform={'capitalize'} color={'propulsion.thirdy'}>
-                                {message.from}
+                                {message.to !== currUser ? 'you' : message.from}
                               </Tag>
                             </Box>
                             <Box w={{ sm: 'full', md: '50%' }} bg={'propulsion.thirdy'} padding={'10px'} borderRadius={'xl'} marginY={'10px'}>
@@ -64,7 +74,10 @@ const Chat: React.FC = () => {
                             </Box>
                           </Flex>
                         );
-                      })}
+                      })
+                    ) : (
+                      <LoadingComponent />
+                    )}
                   </Flex>
                   <Box paddingY={'20px'} paddingX={'1rem'}>
                     <Flex>
